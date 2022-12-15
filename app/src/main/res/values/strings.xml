@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Jetpack Compose Test</string>
+    <string name="sign_in_password">Password</string>
+    <string name="sign_in_submit">Sign in</string>
+    <string name="sign_in_email">Email</string>
+    <string name="login_form">Login Form</string>
+    <string name="email_placeholder">s21072000@yandex.ru</string>
+    <string name="password_placeholder">Test123!</string>
+    <string name="password_toast">Please enter password</string>
+    <string name="email_toast">Please enter email</string>
+    <string name="success">Success!</string>
+</resources>
