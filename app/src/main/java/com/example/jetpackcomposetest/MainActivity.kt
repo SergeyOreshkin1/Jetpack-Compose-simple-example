@@ -32,7 +32,7 @@ import androidx.compose.ui.text.input.ImeAction.Companion.Next
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
 import com.example.jetpackcomposetest.ui.theme.CustomItem
-import com.example.jetpackcomposetest.ui.theme.PersonRepository
+import com.example.jetpackcomposetest.data.PersonRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ fun LoginForm() {
             .padding(dimensionResource(id = R.dimen.padding_16dp))
             .verticalScroll(rememberScrollState())
             .clickable { focusManager.clearFocus() },
-        // verticalArrangement = Arrangement.Center,
+         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

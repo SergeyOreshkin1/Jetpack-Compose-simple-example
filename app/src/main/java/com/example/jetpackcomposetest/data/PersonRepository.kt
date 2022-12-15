@@ -1,4 +1,6 @@
-package com.example.jetpackcomposetest.ui.theme
+package com.example.jetpackcomposetest.data
+
+import com.example.jetpackcomposetest.data.Person
 
 class PersonRepository {
     fun getAllData(): List<Person> {

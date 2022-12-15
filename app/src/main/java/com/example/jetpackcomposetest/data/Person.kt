@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetest.ui.theme
+package com.example.jetpackcomposetest.data
 
 data class Person(
     val id: Int,
