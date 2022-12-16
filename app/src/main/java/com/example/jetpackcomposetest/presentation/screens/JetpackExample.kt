@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetest.screens
+package com.example.jetpackcomposetest.presentation.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -125,9 +125,6 @@ fun JetpackExample(navController: NavController) {
                 label = { Text(text = stringResource(id = R.string.sign_in_password)) },
                 placeholder = { Text(text = stringResource(id = R.string.password_placeholder)) },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                ),
                 keyboardActions = KeyboardActions(onDone = {
                     focusManager.clearFocus()
                 }),

@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetest.screens
+package com.example.jetpackcomposetest.presentation.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

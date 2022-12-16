@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetest.screens
+package com.example.jetpackcomposetest.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -36,7 +36,7 @@ fun MainScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.hh_logo),
             contentDescription = "",
             modifier = Modifier
-                .padding(vertical = dimensionResource(id = R.dimen.padding_16dp))
+                .padding(vertical = dimensionResource(id = R.dimen.padding_32dp))
                 .size(dimensionResource(id = R.dimen.image_size)),
             alignment = Alignment.Center
         )
@@ -167,7 +167,8 @@ fun MainScreen(navController: NavController) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = dimensionResource(id = R.dimen.padding_16dp)),
+                .padding(top = dimensionResource(id = R.dimen.padding_16dp))
+                .padding(bottom = dimensionResource(id = R.dimen.padding_16dp)),
             onClick = {
                 navController.navigate(Screens.JetpackExample.route) {
                     launchSingleTop = true
