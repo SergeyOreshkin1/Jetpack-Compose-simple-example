@@ -1,4 +1,4 @@
-package com.example.jetpackcomposetest.ui.theme
+package com.example.jetpackcomposetest.presentation.lazy_column_item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposetest.data.Person
+import com.example.jetpackcomposetest.ui.theme.Typography
 
 @Composable
 fun CustomItem(person: Person) {
