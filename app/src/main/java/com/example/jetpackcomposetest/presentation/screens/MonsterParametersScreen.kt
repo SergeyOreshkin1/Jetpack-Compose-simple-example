@@ -7,9 +7,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -29,11 +29,37 @@ import com.example.jetpackcomposetest.textSizeResource
 fun MonsterParametersScreen(navController: NavController) {
 
     val focusManager = LocalFocusManager.current
-    val attack = remember { mutableStateOf("") }
-    val protection = remember { mutableStateOf("") }
-    val health = remember { mutableStateOf("") }
-    val minDamage = remember { mutableStateOf("") }
-    val maxDamage = remember { mutableStateOf("") }
+    var attack by rememberSaveable { mutableStateOf("") }
+    var protection by rememberSaveable { mutableStateOf("") }
+    var health by rememberSaveable { mutableStateOf("") }
+    var minDamage by rememberSaveable { mutableStateOf("") }
+    var maxDamage by rememberSaveable { mutableStateOf("") }
+
+    var isAttackFieldError by rememberSaveable { mutableStateOf(false) }
+    var isProtectionFieldError by rememberSaveable { mutableStateOf(false) }
+    var isHealthFieldError by rememberSaveable { mutableStateOf(false) }
+    var isMinDamageFieldError by rememberSaveable { mutableStateOf(false) }
+    var isMaxDamageFieldError by rememberSaveable { mutableStateOf(false) }
+
+    fun validateAttackField(text: String) {
+        if (text.isNotEmpty()) isAttackFieldError = text.toInt() > 20
+    }
+
+    fun validateProtectionField(text: String) {
+        if (text.isNotEmpty()) isProtectionFieldError = text.toInt() > 20
+    }
+
+    fun validateHealthField(text: String) {
+        if (text.isNotEmpty()) isHealthFieldError = text.toInt() !in 30..100
+    }
+
+    fun validateMinDamageField(text: String) {
+        if (text.isNotEmpty()) isMinDamageFieldError = text.toInt() !in 1..3
+    }
+
+    fun validateMaxDamageField(text: String) {
+        if (text.isNotEmpty()) isMaxDamageFieldError = text.toInt() !in 4..7
+    }
 
     Column(
         modifier = Modifier
@@ -91,127 +117,261 @@ fun MonsterParametersScreen(navController: NavController) {
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_16dp)),
             )
 
-            TextField(
-                value = attack.value,
-                onValueChange = { attack.value = it },
-                label = { Text(text = stringResource(id = R.string.attack_parameter),
-                    color = colorResource(id = R.color.silver_chalice)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true,
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_16dp),
-                        vertical = dimensionResource(id = R.dimen.padding_16dp)
+            Column()
+            {
+                TextField(
+                    value = attack,
+                    onValueChange = {
+                        if (it.length <= 2) attack = it
+                        isAttackFieldError = false
+                        validateAttackField(attack)
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.attack_parameter),
+                            color = colorResource(id = R.color.silver_chalice)
+                        )
+                    },
+                    trailingIcon = {
+                        if (isAttackFieldError)
+                            Icon(
+                                Icons.Filled.Info,
+                                stringResource(id = R.string.edit_text_parameters_error),
+                                tint = MaterialTheme.colors.error
+                            )
+                    },
+                    singleLine = true,
+                    isError = isAttackFieldError,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = dimensionResource(id = R.dimen.padding_16dp),
+                            vertical = dimensionResource(id = R.dimen.padding_16dp)
+                        )
+                        .background(colorResource(id = R.color.control)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(id = R.color.hh_color)
                     )
-                    .background(colorResource(id = R.color.control)),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = colorResource(id = R.color.hh_color)
                 )
-            )
+                if (isAttackFieldError) {
+                    Text(
+                        text = stringResource(id = R.string.edit_text_parameters_error),
+                        color = MaterialTheme.colors.error,
+                        fontSize = textSizeResource(id = R.dimen.regular_text_size),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_32dp))
+                    )
+                }
 
-            TextField(
-                value = protection.value,
-                onValueChange = { protection.value = it },
-                label = { Text(text = stringResource(id = R.string.protection_parameter),
-                    color = colorResource(id = R.color.silver_chalice)
-                ) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true,
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_16dp),
-                        vertical = dimensionResource(id = R.dimen.padding_16dp)
+                TextField(
+                    value = protection,
+                    onValueChange = {
+                        if (it.length <= 2) protection = it
+                        isProtectionFieldError = false
+                        validateProtectionField(protection)
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.protection_parameter),
+                            color = colorResource(id = R.color.silver_chalice)
+                        )
+                    },
+                    trailingIcon = {
+                        if (isProtectionFieldError)
+                            Icon(
+                                Icons.Filled.Info,
+                                stringResource(id = R.string.edit_text_parameters_error),
+                                tint = MaterialTheme.colors.error
+                            )
+                    },
+                    singleLine = true,
+                    isError = isProtectionFieldError,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = dimensionResource(id = R.dimen.padding_16dp),
+                            vertical = dimensionResource(id = R.dimen.padding_16dp)
+                        )
+                        .background(colorResource(id = R.color.control)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(id = R.color.hh_color)
                     )
-                    .background(colorResource(id = R.color.control)),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = colorResource(id = R.color.hh_color)
                 )
-            )
+                if (isProtectionFieldError) {
+                    Text(
+                        text = stringResource(id = R.string.edit_text_parameters_error),
+                        color = MaterialTheme.colors.error,
+                        fontSize = textSizeResource(id = R.dimen.regular_text_size),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_32dp))
+                    )
+                }
 
-            TextField(
-                value = health.value,
-                onValueChange = { health.value = it },
-                label = { Text(text = stringResource(id = R.string.health_parameter),
-                    color = colorResource(id = R.color.silver_chalice)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true,
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_16dp),
-                        vertical = dimensionResource(id = R.dimen.padding_16dp)
+                TextField(
+                    value = health,
+                    onValueChange = {
+                        if (it.length <= 3) health = it
+                        isHealthFieldError = false
+                        validateHealthField(health)
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.health_parameter),
+                            color = colorResource(id = R.color.silver_chalice)
+                        )
+                    },
+                    trailingIcon = {
+                        if (isHealthFieldError)
+                            Icon(
+                                Icons.Filled.Info,
+                                stringResource(id = R.string.edit_text_parameters_error),
+                                tint = MaterialTheme.colors.error
+                            )
+                    },
+                    singleLine = true,
+                    isError = isHealthFieldError,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = dimensionResource(id = R.dimen.padding_16dp),
+                            vertical = dimensionResource(id = R.dimen.padding_16dp)
+                        )
+                        .background(colorResource(id = R.color.control)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(id = R.color.hh_color)
                     )
-                    .background(colorResource(id = R.color.control)),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = colorResource(id = R.color.hh_color)
                 )
-            )
+                if (isHealthFieldError) {
+                    Text(
+                        text = stringResource(id = R.string.edit_text_parameters_error),
+                        color = MaterialTheme.colors.error,
+                        fontSize = textSizeResource(id = R.dimen.regular_text_size),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_32dp))
+                    )
+                }
 
-            TextField(
-                value = minDamage.value,
-                onValueChange = { minDamage.value = it },
-                label = { Text(text = stringResource(id = R.string.min_damage),
-                    color = colorResource(id = R.color.silver_chalice)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true,
-                keyboardActions = KeyboardActions(onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_16dp),
-                        vertical = dimensionResource(id = R.dimen.padding_16dp)
+                TextField(
+                    value = minDamage,
+                    onValueChange = {
+                        if (it.length <= 1) minDamage = it
+                        isMinDamageFieldError = false
+                        validateMinDamageField(minDamage)
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.min_damage),
+                            color = colorResource(id = R.color.silver_chalice)
+                        )
+                    },
+                    trailingIcon = {
+                        if (isMinDamageFieldError)
+                            Icon(
+                                Icons.Filled.Info,
+                                stringResource(id = R.string.edit_text_parameters_error),
+                                tint = MaterialTheme.colors.error
+                            )
+                    },
+                    singleLine = true,
+                    isError = isMinDamageFieldError,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = dimensionResource(id = R.dimen.padding_16dp),
+                            vertical = dimensionResource(id = R.dimen.padding_16dp)
+                        )
+                        .background(colorResource(id = R.color.control)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(id = R.color.hh_color)
                     )
-                    .background(colorResource(id = R.color.control)),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = colorResource(id = R.color.hh_color)
                 )
-            )
+                if (isMinDamageFieldError) {
+                    Text(
+                        text = stringResource(id = R.string.edit_text_parameters_error),
+                        color = MaterialTheme.colors.error,
+                        fontSize = textSizeResource(id = R.dimen.regular_text_size),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_32dp))
+                    )
+                }
 
-            TextField(
-                value = maxDamage.value,
-                onValueChange = { maxDamage.value = it },
-                label = { Text(text = stringResource(id = R.string.max_damage),
-                    color = colorResource(id = R.color.silver_chalice)) },
-                singleLine = true,
-                keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_16dp),
-                        vertical = dimensionResource(id = R.dimen.padding_16dp)
+                TextField(
+                    value = maxDamage,
+                    onValueChange = {
+                        if (it.length <= 1) maxDamage = it
+                        isMaxDamageFieldError = false
+                        validateMaxDamageField(maxDamage)
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.max_damage),
+                            color = colorResource(id = R.color.silver_chalice)
+                        )
+                    },
+                    trailingIcon = {
+                        if (isMaxDamageFieldError)
+                            Icon(
+                                Icons.Filled.Info,
+                                stringResource(id = R.string.edit_text_parameters_error),
+                                tint = MaterialTheme.colors.error
+                            )
+                    },
+                    singleLine = true,
+                    isError = isMaxDamageFieldError,
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusManager.clearFocus()
+                    }),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = dimensionResource(id = R.dimen.padding_16dp),
+                            vertical = dimensionResource(id = R.dimen.padding_16dp)
+                        )
+                        .background(colorResource(id = R.color.control)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = colorResource(id = R.color.hh_color)
                     )
-                    .background(colorResource(id = R.color.control)),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = colorResource(id = R.color.hh_color)
                 )
-            )
+                if (isMaxDamageFieldError) {
+                    Text(
+                        text = stringResource(id = R.string.edit_text_parameters_error),
+                        color = MaterialTheme.colors.error,
+                        fontSize = textSizeResource(id = R.dimen.regular_text_size),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_32dp))
+                    )
+                }
+            }
 
             Button(
                 colors = ButtonDefaults.buttonColors(
@@ -226,7 +386,16 @@ fun MonsterParametersScreen(navController: NavController) {
                 onClick = {
                     navController.navigateUp()
                 },
-                enabled = false
+                enabled = !isAttackFieldError
+                        && !isProtectionFieldError
+                        && !isHealthFieldError
+                        && !isMinDamageFieldError
+                        && !isMaxDamageFieldError
+                        && attack.isNotEmpty()
+                        && protection.isNotEmpty()
+                        && health.isNotEmpty()
+                        && minDamage.isNotEmpty()
+                        && maxDamage.isNotEmpty()
             ) {
                 Text(
                     text = stringResource(id = R.string.apply),
