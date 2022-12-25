@@ -37,6 +37,9 @@ android {
     buildFeatures {
         compose true
     }
+    viewBinding {
+        enabled = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
@@ -48,6 +51,9 @@ android {
 }
 
 dependencies {
+
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     def nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")

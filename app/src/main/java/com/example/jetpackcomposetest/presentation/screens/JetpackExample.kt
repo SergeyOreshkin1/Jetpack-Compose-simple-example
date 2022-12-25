@@ -9,8 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.jetpackcomposetest.R
 import com.example.jetpackcomposetest.presentation.lazy_column_item.CustomItem
 import com.example.jetpackcomposetest.data.PersonRepository
+import com.example.jetpackcomposetest.presentation.custom_view.CustomAppBar
 import com.example.jetpackcomposetest.showMessage
 import com.example.jetpackcomposetest.textSizeResource
 
@@ -43,30 +42,9 @@ fun JetpackExample(navController: NavController) {
     val password = remember { mutableStateOf("") }
 
     Column {
-
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.compose_example),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = textSizeResource(id = R.dimen.large_text_size),
-                    color = colorResource(id = R.color.black)
-                )
-            },
-            backgroundColor = colorResource(id = R.color.hh_color),
-            navigationIcon = {
-                IconButton(onClick = {
-                    navController.navigateUp()
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Navigation icon",
-                        tint = colorResource(
-                            id = R.color.black
-                        )
-                    )
-                }
-            }
+        CustomAppBar(
+            navController = navController,
+            text = stringResource(id = R.string.compose_example)
         )
 
         Column(

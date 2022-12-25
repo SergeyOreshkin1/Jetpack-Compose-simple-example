@@ -4,6 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.jetpackcomposetest.data.Bug
+import com.example.jetpackcomposetest.data.Player
 
 class ParametersViewModel : ViewModel() {
 
@@ -18,6 +20,20 @@ class ParametersViewModel : ViewModel() {
     var health by mutableStateOf("")
     var minDamage by mutableStateOf("")
     var maxDamage by mutableStateOf("")
+
+    var player by mutableStateOf<Player?>(null)
+        private set
+
+    var bug by mutableStateOf<Bug?>(null)
+        private set
+
+    fun addPlayer(player: Player) {
+        this.player = player
+    }
+
+    fun addBug(bug: Bug) {
+        this.bug = bug
+    }
 
     fun validateAttackField(text: String) {
         if (text.isNotEmpty()) isAttackFieldError = text.toInt() > 20
