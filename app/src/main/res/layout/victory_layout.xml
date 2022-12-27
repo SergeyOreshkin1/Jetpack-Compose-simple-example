@@ -32,10 +32,10 @@
             android:text="@string/victory_result"
             android:textSize="@dimen/medium_text_size" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.HHGame.Button.Primary"
             android:id="@+id/new_game_button"
             android:layout_width="match_parent"
-            style="@style/Widget.HHGame.Button.Primary"
             android:layout_height="@dimen/size"
             android:layout_marginHorizontal="@dimen/margin_M"
             android:layout_marginTop="@dimen/margin_XL"

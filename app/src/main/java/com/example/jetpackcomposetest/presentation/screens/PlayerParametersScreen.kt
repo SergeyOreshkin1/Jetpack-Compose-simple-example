@@ -1,11 +1,13 @@
 package com.example.jetpackcomposetest.presentation.screens
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -28,11 +30,14 @@ import com.example.jetpackcomposetest.presentation.viewmodel.ParametersViewModel
 fun PlayerParametersScreen(navController: NavController, viewModel: ParametersViewModel) {
 
     val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { focusManager.clearFocus() },
+            .clickable(interactionSource = interactionSource,indication = null) {
+                focusManager.clearFocus()
+            }
     ) {
 
         CustomAppBar(

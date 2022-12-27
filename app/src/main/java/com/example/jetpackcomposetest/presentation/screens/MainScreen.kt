@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.jetpackcomposetest.navigation.Screens
@@ -142,4 +144,19 @@ fun MainScreen(navController: NavController, viewModel: ParametersViewModel) {
             bottomPadding = dimensionResource(id = R.dimen.padding_16dp)
         )
     }
+
+   /* Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+
+        Button(onClick = {
+            navController.navigate(Screens.JetpackExample.route) {
+                launchSingleTop = true
+            }
+        }) {
+            Text(
+                text = "text",
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_8dp)),
+                fontWeight = FontWeight.Bold
+            )
+        }
+    } */
 }

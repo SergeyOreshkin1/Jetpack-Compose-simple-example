@@ -1,10 +1,12 @@
 package com.example.jetpackcomposetest.presentation.screens
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +29,14 @@ import com.example.jetpackcomposetest.textSizeResource
 fun MonsterParametersScreen(navController: NavController, viewModel: ParametersViewModel) {
 
     val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { focusManager.clearFocus() }
+            .clickable(interactionSource = interactionSource,indication = null) {
+                focusManager.clearFocus()
+            }
     ) {
 
         CustomAppBar(

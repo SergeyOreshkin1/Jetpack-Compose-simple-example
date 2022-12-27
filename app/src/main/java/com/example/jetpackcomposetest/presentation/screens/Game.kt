@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.navigation.NavController
 import com.example.jetpackcomposetest.data.Bug
 import com.example.jetpackcomposetest.data.Player
@@ -12,6 +13,7 @@ import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.core.view.isVisible
 import com.example.jetpackcomposetest.R
 import com.example.jetpackcomposetest.databinding.FragmentGameBinding
+import com.example.jetpackcomposetest.presentation.custom_view.CustomButton
 
 private const val COUNT_CUP_DEFAULT_VALUE = "3"
 private const val ONE_CUP = 1
@@ -133,63 +135,67 @@ fun Game(navController: NavController) {
         }
 
         fun throwDiceAction() {
+            throwDiceBtnCompose.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            throwDiceBtnCompose.setContent {
+                CustomButton(onClick = {
 
-            throwDiceBtn.setOnClickListener {
+                    /** Сколько урона нанес игрок **/
 
-                /** Сколько урона нанес игрок **/
-
-                val playerRollResult = strike(
-                    minAttackerDamage = player!!.minDamage,
-                    maxAttackerDamage = player.maxDamage,
-                    player.calculateAttackModifier(
-                        attackersAttack = player.attack,
-                        defenderDefense = bug!!.protection
-                    )
-                )
-
-                tvDamagePlayerAfterThrow.text = playerRollResult.toString()
-
-                /** Обновление значения здоровья игрока **/
-
-                tvHealthMonsterValue.text =
-                    (tvHealthMonsterValue.text.toString().toInt() - playerRollResult).toString()
-
-                /** Был ли успешным ход игрока **/
-
-                if (playerRollResult != FAILURE) tvRollResultPlayerValue.text =
-                    context.getString(R.string.lucky) else tvRollResultPlayerValue.text =
-                    context.getString(R.string.failure)
-
-                /** Сколько урона нанес монстр **/
-
-                if (tvHealthMonsterValue.text.toString().toInt() > ZERO_HP_POINTS) {
-                    val monsterRollResult = strike(
-                        minAttackerDamage = bug.minDamage,
-                        maxAttackerDamage = bug.maxDamage,
-                        bug.calculateAttackModifier(
-                            attackersAttack = bug.attack,
-                            defenderDefense = player.protection
+                    val playerRollResult = strike(
+                        minAttackerDamage = player!!.minDamage,
+                        maxAttackerDamage = player.maxDamage,
+                        player.calculateAttackModifier(
+                            attackersAttack = player.attack,
+                            defenderDefense = bug!!.protection
                         )
                     )
 
-                    tvDamageMonsterAfterThrow.text = monsterRollResult.toString()
+                    tvDamagePlayerAfterThrow.text = playerRollResult.toString()
 
-                    /** Обновление значения здоровья монстра **/
+                    /** Обновление значения здоровья игрока **/
 
-                    tvHealthPlayerValue.text =
-                        (tvHealthPlayerValue.text.toString().toInt() - monsterRollResult).toString()
+                    tvHealthMonsterValue.text =
+                        (tvHealthMonsterValue.text.toString().toInt() - playerRollResult).toString()
 
-                    /** Был ли успешным ход монстра **/
+                    /** Был ли успешным ход игрока **/
 
-                    if (monsterRollResult != FAILURE) tvRollResultMonsterValue.text =
-                        context.getString(R.string.lucky) else tvRollResultMonsterValue.text =
+                    if (playerRollResult != FAILURE) tvRollResultPlayerValue.text =
+                        context.getString(R.string.lucky) else tvRollResultPlayerValue.text =
                         context.getString(R.string.failure)
-                }
 
-                /** закончилась ли игра **/
+                    /** Сколько урона нанес монстр **/
 
-                monsterDiedCheck()
-                playerDiedCheck()
+                    if (tvHealthMonsterValue.text.toString().toInt() > ZERO_HP_POINTS) {
+                        val monsterRollResult = strike(
+                            minAttackerDamage = bug.minDamage,
+                            maxAttackerDamage = bug.maxDamage,
+                            bug.calculateAttackModifier(
+                                attackersAttack = bug.attack,
+                                defenderDefense = player.protection
+                            )
+                        )
+
+                        tvDamageMonsterAfterThrow.text = monsterRollResult.toString()
+
+                        /** Обновление значения здоровья монстра **/
+
+                        tvHealthPlayerValue.text =
+                            (tvHealthPlayerValue.text.toString()
+                                .toInt() - monsterRollResult).toString()
+
+                        /** Был ли успешным ход монстра **/
+
+                        if (monsterRollResult != FAILURE) tvRollResultMonsterValue.text =
+                            context.getString(R.string.lucky) else tvRollResultMonsterValue.text =
+                            context.getString(R.string.failure)
+                    }
+
+                    /** закончилась ли игра **/
+
+                    monsterDiedCheck()
+                    playerDiedCheck()
+                }, text = context.getString(R.string.throw_dice))
+
             }
         }
 

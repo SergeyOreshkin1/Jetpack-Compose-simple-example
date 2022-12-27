@@ -31,11 +31,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="-4dp"
+                android:src="@drawable/vs_background"
                 app:layout_constraintDimensionRatio="W, 0.72:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/vs_background" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/parameters_layout"
@@ -409,16 +409,12 @@
 
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/throw_dice_btn"
-                style="@style/Widget.HHGame.Button.Primary"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/throw_dice_btn_compose"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size"
+                android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_M"
                 android:layout_marginTop="@dimen/margin_M"
-                android:background="@color/hh_color"
-                android:text="@string/throw_dice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_action_heal_layout" />
@@ -435,7 +431,7 @@
                 android:textSize="@dimen/large_text_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/throw_dice_btn" />
+                app:layout_constraintTop_toBottomOf="@+id/throw_dice_btn_compose" />
 
             <TextView
                 android:id="@+id/tv_roll_result_player"
